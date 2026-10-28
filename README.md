@@ -11,7 +11,11 @@ L'éditeur permet d'organiser les pages sous forme de graphe, de modifier leur c
 - RichTextFX pour le texte enrichi et Apache PDFBox pour l'export PDF.
 - JUnit 5 pour les tests.
 
-## Lancer le projet
+## Télécharger et lancer MyInk
+
+Les versions pour macOS ARM64, Windows x64 et Linux x64 sont disponibles dans la section **Releases** du dépôt GitHub. Téléchargez le fichier correspondant à votre système, puis installez et lancez MyInk. Il n'est pas nécessaire d'installer Java pour utiliser ces versions.
+
+## Lancer depuis le code source
 
 Installez un JDK 21 et placez-vous à la racine du projet. Le Maven Wrapper télécharge Maven et les dépendances si nécessaire.
 
@@ -30,12 +34,6 @@ mvnw.cmd clean javafx:run
 ## Sauvegarde des livres
 
 Les livres sont enregistrés dans un dossier `MyInkBooks` situé dans le répertoire de lancement de l'application.
-
-## Distributions autonomes
-
-Le workflow GitHub Actions **Distributions autonomes**, lancé manuellement depuis l'onglet Actions, construit des paquets pour macOS ARM64, Windows x64 et Linux x64. Une fois la construction terminée, téléchargez les trois archives dans la section **Artifacts** de l'exécution. Les paquets incluent Java et ne nécessitent donc pas son installation séparée.
-
-Les paquets ne sont pas signés. Leur installation et leur fonctionnement doivent être vérifiés sur chaque système cible.
 
 ## Crédits
 
