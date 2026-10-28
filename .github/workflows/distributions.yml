@@ -1,0 +1,58 @@
+name: Distributions autonomes
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: macOS ARM64
+            runner: macos-15
+            type: dmg
+            artifact: MyInk-macOS-arm64
+          - name: Windows x64
+            runner: windows-2022
+            type: exe
+            artifact: MyInk-Windows-x64
+          - name: Linux x64
+            runner: ubuntu-24.04
+            type: deb
+            artifact: MyInk-Linux-x64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Compiler et tester
+        run: mvn --batch-mode clean verify
+      - name: Préparer les dépendances
+        run: mvn --batch-mode dependency:copy-dependencies -DincludeScope=runtime -DoutputDirectory=target/package
+      - name: Préparer l'application
+        shell: pwsh
+        run: Copy-Item target/MyInk-1.0-SNAPSHOT.jar target/package/
+      - name: Installer les outils Linux
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y fakeroot
+      - name: Créer la distribution
+        shell: pwsh
+        run: |
+          jpackage --type ${{ matrix.type }} --name MyInk --app-version 1.0.0 `
+            --input target/package --main-jar MyInk-1.0-SNAPSHOT.jar `
+            --main-class org.l2o1.myink.Launcher --add-modules java.se,jdk.unsupported,jdk.crypto.ec `
+            --dest dist
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: dist/*
+          if-no-files-found: error

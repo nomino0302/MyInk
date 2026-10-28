@@ -1,0 +1,15 @@
+# Fichiers produits par Maven et distributions
+/target/
+/dist/
+
+# Livres créés lors du développement (anciennes versions)
+/MyInkBooks/
+
+# Réglages locaux des IDE
+.idea/
+*.iml
+.vscode/
+
+# Fichiers système
+.DS_Store
+Thumbs.db
