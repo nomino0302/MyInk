@@ -37,9 +37,17 @@ jobs:
           java-version: '21'
           cache: maven
       - name: Compiler et tester
+        if: runner.os != 'Linux'
         run: mvn --batch-mode clean verify
+      - name: Compiler et tester (Linux)
+        if: runner.os == 'Linux'
+        run: ./mvnw --batch-mode clean verify
       - name: Préparer les dépendances
+        if: runner.os != 'Linux'
         run: mvn --batch-mode dependency:copy-dependencies -DincludeScope=runtime -DoutputDirectory=target/package
+      - name: Préparer les dépendances (Linux)
+        if: runner.os == 'Linux'
+        run: ./mvnw --batch-mode dependency:copy-dependencies -DincludeScope=runtime -DoutputDirectory=target/package
       - name: Préparer l'application
         shell: pwsh
         run: Copy-Item target/MyInk-1.0-SNAPSHOT.jar target/package/
