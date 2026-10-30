@@ -2,7 +2,7 @@
 /target/
 /dist/
 
-# Livres créés lors du développement (anciennes versions)
+# Livres créés lors du développement
 /MyInkBooks/
 
 # Réglages locaux des IDE
@@ -13,3 +13,5 @@
 # Fichiers système
 .DS_Store
 Thumbs.db
+
+/apps/
